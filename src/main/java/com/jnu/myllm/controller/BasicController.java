@@ -37,7 +37,7 @@ public class BasicController {
             Generation gen = new Generation();
 
             QwenParam params = QwenParam.builder().model("qwen-turbo")
-                    .apiKey("sk-0181a7a1e6be46c7afe9c04554d83e8e")
+                    .apiKey("")
                     .prompt(say)
                     .seed(1234)
                     .topP(0.8)
