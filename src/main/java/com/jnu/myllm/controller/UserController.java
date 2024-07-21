@@ -1,6 +1,7 @@
 package com.jnu.myllm.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.jnu.myllm.annotation.JwtAuth;
 import com.jnu.myllm.common.ServerResponseEntity;
 import com.jnu.myllm.domain.LUser;
 import com.jnu.myllm.dto.LoginDTO;
@@ -34,7 +35,7 @@ public class UserController {
      * @return 如果用户名或密码错误，返回错误的响应实体；如果登录成功，返回包含用户信息的响应实体。
      */
     @PostMapping("/login")
-    public ServerResponseEntity<String> login(@RequestBody LoginDTO loginDto,  HttpServletRequest request, HttpServletResponse response){
+    public ServerResponseEntity<UserVO> login(@RequestBody LoginDTO loginDto,  HttpServletRequest request, HttpServletResponse response){
         // 记录登录尝试的日志，包括用户名和密码。
         log.info("用户登录,用户名:{},密码:{}", loginDto.getUsername(),loginDto.getPassword());
 
@@ -57,24 +58,30 @@ public class UserController {
 
         // 登录成功，创建并返回包含用户基本信息的VO对象。
         UserVO userVO = new UserVO();
-        userVO.setUserId(lUser.getUserId());
+        userVO.setUserId(Long.toString(lUser.getUserId()));
         userVO.setUsername(lUser.getUsername());
-        userVO.setPassword(lUser.getPassword());
+        userVO.setNickName(lUser.getNickName());
         userVO.setStatus(lUser.getStatus());
+        userVO.setSex(lUser.getSex());
+        userVO.setEmail(lUser.getEmail());
+        userVO.setTelephone(lUser.getTelephone());
+        userVO.setUserTokens(lUser.getUserTokens());
 
         // 获取当前请求的会话对象，并存储登陆数据到session中
         request.getSession().setAttribute("user", userVO);
 
         String token = JwtUtil.generateToken(lUser.getUsername());
         response.setHeader("Authorization", token);
+        userVO.setToken(token);
 
 
-        return ServerResponseEntity.success(SUCCESS.getCode(),token);
+        //尝试一下直接从报文头获取token，交给前端完成，这样就不用返回token了
+        return ServerResponseEntity.success(SUCCESS.getCode(),userVO);
         //return new ResponseEntity<>(ServerResponseEntity.success(SUCCESS.getCode(), userVO), headers, HttpStatus.OK)
     }
 
     @PostMapping("/register")
-    public ServerResponseEntity<UserVO> register(@RequestBody RegisterDTO registerDto, HttpServletRequest httpServletRequest){
+    public ServerResponseEntity<UserVO> register(@RequestBody RegisterDTO registerDto,  HttpServletRequest request, HttpServletResponse response){
         log.info("用户注册，用户名:{}，密码:{}",registerDto.getUsername(),registerDto.getPassword());
 
         LUser lUser = new LUser();
@@ -84,14 +91,31 @@ public class UserController {
         lUser.setStatus(1);
         lUser.setCreateTime(new java.util.Date());
         lUser.setUpdateTime(new java.util.Date());
+        lUser.setEmail(registerDto.getEmail());
+        lUser.setTelephone(registerDto.getTelephone());
+        lUser.setNickName(registerDto.getNickName());
+        lUser.setSex(registerDto.getSex());
+        lUser.setUserTokens(10000);
         if(lUserService.save(lUser)){
             UserVO userVO = new UserVO();
-            userVO.setUserId(lUser.getUserId());
+            userVO.setUserId(Long.toString(lUser.getUserId()));
             userVO.setUsername(lUser.getUsername());
-            userVO.setPassword(lUser.getPassword());
+            userVO.setNickName(lUser.getNickName());
+           //userVO.setToken(lUser.getPassword());
             userVO.setStatus(lUser.getStatus());
+            userVO.setNickName(lUser.getNickName());
+            userVO.setTelephone(lUser.getTelephone());
+            userVO.setEmail(lUser.getEmail());
+            userVO.setSex(lUser.getSex());
+            userVO.setUserTokens(lUser.getUserTokens());
 
-            httpServletRequest.getSession().setAttribute("user",userVO);
+
+            request.getSession().setAttribute("user",userVO);
+
+            String token = JwtUtil.generateToken(lUser.getUsername());
+            response.setHeader("Authorization", token);
+            userVO.setToken(token);
+
             return ServerResponseEntity.success(SUCCESS.getCode(),userVO);
         }
 
@@ -102,6 +126,12 @@ public class UserController {
     public ServerResponseEntity<String> logout(HttpServletRequest httpServletRequest){
         httpServletRequest.getSession().removeAttribute("user");
         return ServerResponseEntity.success(SUCCESS.getCode(),"退出成功");
+    }
+
+    @JwtAuth
+    @GetMapping("/verify")
+    public void verifyToken(){
+        return;
     }
 
 }

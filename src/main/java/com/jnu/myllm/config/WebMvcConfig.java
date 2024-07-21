@@ -25,6 +25,6 @@ public class WebMvcConfig implements org.springframework.web.servlet.config.anno
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(jwtInterceptor)
                 .addPathPatterns("/**")
-                .excludePathPatterns("/home/**"); // 排除登录和注册路径
+                .excludePathPatterns("/home/login","/home/register"); // 排除登录和注册路径
     }
 }

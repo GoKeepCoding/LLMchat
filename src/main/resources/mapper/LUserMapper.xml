@@ -11,10 +11,20 @@
             <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
             <result property="status" column="status" jdbcType="TINYINT"/>
             <result property="password" column="password" jdbcType="VARCHAR"/>
+            <result property="nickName" column="nick_name" jdbcType="VARCHAR"/>
+            <result property="sex" column="sex" jdbcType="VARCHAR"/>
+            <result property="email" column="email" jdbcType="VARCHAR"/>
+            <result property="telephone" column="telephone" jdbcType="VARCHAR"/>
+            <result property="userRole" column="user_role" jdbcType="TINYINT"/>
+            <result property="avatar" column="avatar" jdbcType="VARCHAR"/>
+            <result property="userTokens" column="user_tokens" jdbcType="INTEGER"/>
     </resultMap>
 
     <sql id="Base_Column_List">
         user_id,username,create_time,
-        update-time,status,password
+        update_time,status,password,
+        nick_name,sex,email,
+        telephone,user_role,avatar,
+        user_tokens
     </sql>
 </mapper>

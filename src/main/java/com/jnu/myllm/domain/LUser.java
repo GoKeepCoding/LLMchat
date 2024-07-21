@@ -1,12 +1,13 @@
 package com.jnu.myllm.domain;
 
-import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import java.io.Serializable;
-import java.util.Date;
 import lombok.Data;
+
+import java.io.Serializable;
+import java.math.BigInteger;
+import java.util.Date;
 
 /**
  * 
@@ -46,6 +47,41 @@ public class LUser implements Serializable {
      */
     private String password;
 
+    /**
+     * 用户昵称
+     */
+    private String nickName;
+
+    /**
+     * 性别
+     */
+    private String sex;
+
+    /**
+     * 邮箱
+     */
+    private String email;
+
+    /**
+     * 电话号码
+     */
+    private String telephone;
+
+    /**
+     * 用户权限: 0.管理员   1.普通用户
+     */
+    private Integer userRole;
+
+    /**
+     * 用户头像路径
+     */
+    private String avatar;
+
+    /**
+     * 用户所剩余的tokens
+     */
+    private Integer userTokens;
+
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
 
@@ -66,7 +102,14 @@ public class LUser implements Serializable {
             && (this.getCreateTime() == null ? other.getCreateTime() == null : this.getCreateTime().equals(other.getCreateTime()))
             && (this.getUpdateTime() == null ? other.getUpdateTime() == null : this.getUpdateTime().equals(other.getUpdateTime()))
             && (this.getStatus() == null ? other.getStatus() == null : this.getStatus().equals(other.getStatus()))
-            && (this.getPassword() == null ? other.getPassword() == null : this.getPassword().equals(other.getPassword()));
+            && (this.getPassword() == null ? other.getPassword() == null : this.getPassword().equals(other.getPassword()))
+            && (this.getNickName() == null ? other.getNickName() == null : this.getNickName().equals(other.getNickName()))
+            && (this.getSex() == null ? other.getSex() == null : this.getSex().equals(other.getSex()))
+            && (this.getEmail() == null ? other.getEmail() == null : this.getEmail().equals(other.getEmail()))
+            && (this.getTelephone() == null ? other.getTelephone() == null : this.getTelephone().equals(other.getTelephone()))
+            && (this.getUserRole() == null ? other.getUserRole() == null : this.getUserRole().equals(other.getUserRole()))
+            && (this.getAvatar() == null ? other.getAvatar() == null : this.getAvatar().equals(other.getAvatar()))
+            && (this.getUserTokens() == null ? other.getUserTokens() == null : this.getUserTokens().equals(other.getUserTokens()));
     }
 
     @Override
@@ -79,6 +122,13 @@ public class LUser implements Serializable {
         result = prime * result + ((getUpdateTime() == null) ? 0 : getUpdateTime().hashCode());
         result = prime * result + ((getStatus() == null) ? 0 : getStatus().hashCode());
         result = prime * result + ((getPassword() == null) ? 0 : getPassword().hashCode());
+        result = prime * result + ((getNickName() == null) ? 0 : getNickName().hashCode());
+        result = prime * result + ((getSex() == null) ? 0 : getSex().hashCode());
+        result = prime * result + ((getEmail() == null) ? 0 : getEmail().hashCode());
+        result = prime * result + ((getTelephone() == null) ? 0 : getTelephone().hashCode());
+        result = prime * result + ((getUserRole() == null) ? 0 : getUserRole().hashCode());
+        result = prime * result + ((getAvatar() == null) ? 0 : getAvatar().hashCode());
+        result = prime * result + ((getUserTokens() == null) ? 0 : getUserTokens().hashCode());
         return result;
     }
 
@@ -94,6 +144,13 @@ public class LUser implements Serializable {
         sb.append(", updateTime=").append(updateTime);
         sb.append(", status=").append(status);
         sb.append(", password=").append(password);
+        sb.append(", nickName=").append(nickName);
+        sb.append(", sex=").append(sex);
+        sb.append(", email=").append(email);
+        sb.append(", telephone=").append(telephone);
+        sb.append(", userRole=").append(userRole);
+        sb.append(", avatar=").append(avatar);
+        sb.append(", userTokens=").append(userTokens);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

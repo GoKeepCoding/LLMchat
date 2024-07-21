@@ -32,7 +32,7 @@ public class JwtInterceptor implements HandlerInterceptor {
             String token = request.getHeader("Authorization");
             if (token == null || !token.startsWith("Bearer ")) {
                 log.info("token为空或者不合法------------------------------------------");
-                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                //response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                 response.getWriter().write("{\"code\": 401, \"msg\": \"UNAUTHORIZED\"}");
                 return false;
             }
@@ -46,7 +46,7 @@ public class JwtInterceptor implements HandlerInterceptor {
                 request.setAttribute("claims", claims);
             } catch (Exception e) {
                 log.info("token被篡改------------------------------------------");
-                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                //response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                 response.getWriter().write("{\"code\": 401, \"msg\": \"UNAUTHORIZED\"}");
                 return false;
             }
